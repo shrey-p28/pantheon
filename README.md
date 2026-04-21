@@ -123,6 +123,6 @@ All of that's automated.
 
 ## Contact
 
-- **Owner / maintainer:** Grishma Shah, Design Lead, Petpooja — grishma.shah@petpooja.com
+- **Owner / maintainer:** Shrey
 - **Updating the plugin itself:** see `MAINTAIN.md`.
 - **Pantheon Figma file:** https://www.figma.com/design/l8qALS4HQUMbSTyP8BTGRL/Pantheon
