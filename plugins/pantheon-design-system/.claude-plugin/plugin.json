@@ -1,0 +1,19 @@
+{
+  "name": "pantheon-design-system",
+  "version": "1.1.0",
+  "description": "Petpooja's Pantheon design system as a Claude plugin. Applies Pantheon tokens, Prometheus typography, and the 47-component library to every visual or branded output. Includes /sync-pantheon (on-demand Figma re-digest), /pantheon-bootstrap (one-time teammate setup), a UserPromptSubmit hook that auto-triggers weekly re-syncs, and a macOS LaunchAgent installer for terminal users.",
+  "author": {
+    "name": "Petpooja"
+  },
+  "homepage": "https://www.figma.com/design/l8qALS4HQUMbSTyP8BTGRL/Pantheon",
+  "keywords": [
+    "petpooja",
+    "design-system",
+    "pantheon",
+    "brand",
+    "tokens",
+    "prometheus",
+    "figma",
+    "auto-sync"
+  ]
+}
