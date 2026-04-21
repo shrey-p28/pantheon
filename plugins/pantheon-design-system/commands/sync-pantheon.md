@@ -17,7 +17,7 @@ You are syncing the local **pantheon-design-system** skill against the current s
 
 ## Steps
 
-1. **Confirm the Figma MCP is connected.** If `mcp__figma-local__get_metadata` is unavailable, stop and tell Grish to run the Figma desktop app with Dev Mode MCP enabled. Nothing else in this flow works without it.
+1. **Confirm the Figma MCP is connected.** If `mcp__figma-local__get_metadata` is unavailable, stop and tell Shrey to run the Figma desktop app with Dev Mode MCP enabled. Nothing else in this flow works without it.
 
 2. **Full-file metadata dump.** Call `mcp__figma-local__get_metadata` with `nodeId=0:0`. The result is huge (>1M chars) — spawn a subagent to parse it. Ask the subagent for:
    - A list of every page and its node ID.
@@ -41,7 +41,7 @@ You are syncing the local **pantheon-design-system** skill against the current s
 
 8. **Append to `references/skill-update-log.md`.** Use today's date, trigger (`/sync-pantheon` manual or scheduled), a bullet list of what changed, and what gaps remain.
 
-9. **Report back to Grish.** Short summary: what was checked, what changed, what was patched, what still needs human attention. No walls of text — a punch list is fine.
+9. **Report back to Shrey.** Short summary: what was checked, what changed, what was patched, what still needs human attention. No walls of text — a punch list is fine.
 
 ## Guardrails
 
