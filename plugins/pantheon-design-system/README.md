@@ -42,7 +42,7 @@ For local dev, drag the `.plugin` zip into Cowork or unpack into `~/.claude/plug
 
 ## Maintainer
 
-Pantheon design system maintained by Shrey.
+Pantheon design system created and maintained by Shrey.
 
 ## Version
 
