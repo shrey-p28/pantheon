@@ -42,7 +42,7 @@ For local dev, drag the `.plugin` zip into Cowork or unpack into `~/.claude/plug
 
 ## Maintainer
 
-Pantheon design system maintained by Grishma Shah, Design Lead, Petpooja · grishma.shah@petpooja.com
+Pantheon design system maintained by Shrey.
 
 ## Version
 
