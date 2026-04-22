@@ -14,11 +14,11 @@ The plugin also keeps itself fresh: every teammate's first visual prompt each we
 
 ## Install
 
-For distribution via the `petpooja-design` marketplace repo, follow the **team README** at the repo root. Short version:
+For distribution via the `pantheon` repo, follow the **team README** at the repo root. Short version:
 
 ```
-/plugin marketplace add <owner>/<repo>
-/plugin install pantheon-design-system@petpooja-design
+/plugin marketplace add <owner>/pantheon
+/plugin install pantheon-design-system@pantheon
 /pantheon-bootstrap
 ```
 
@@ -42,8 +42,10 @@ For local dev, drag the `.plugin` zip into Cowork or unpack into `~/.claude/plug
 
 ## Maintainer
 
-Pantheon design system created and maintained by Shrey.
+Pantheon design system maintained by Grishma Shah, Design Lead, Petpooja · grishma.shah@petpooja.com
 
 ## Version
+
+1.2.0 — `/sync-pantheon` runs in evidence-only mode (every patched value cites a literal MCP source + a literal pre-patch file value, no narrative summaries, mandatory verification re-read). `/pantheon-bootstrap` now surfaces the authenticated Figma user prominently and asks the teammate to confirm it's their account before relying on sync output.
 
 1.1.0 — adds automatic weekly re-sync (hook + /pantheon-bootstrap + LaunchAgent installer) and strict non-invention enforcement.
