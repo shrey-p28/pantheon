@@ -1,11 +1,11 @@
 ---
 name: pantheon-design-system
-description: Apply Petpooja's Pantheon design system (tokens, Prometheus typography, component library) to every visual or branded output produced for Grish. Use this skill whenever the task involves UI, web/app components, mockups, wireframes, Figma-style layouts, documents (docx/pdf), presentations (pptx), posters, marketing assets, brand content, dashboards, data viz, or anything where colors, typography, spacing, or components are chosen — even if the user doesn't explicitly say "Pantheon," "brand," or "design system." Petpooja's brand blue is #1770ee and the typeface is Inter (branded as Prometheus). When in doubt about whether a task is visual enough to trigger this skill, trigger it.
+description: Apply Petpooja's Pantheon design system (tokens, Prometheus typography, component library) to every visual or branded output produced for Shrey. Use this skill whenever the task involves UI, web/app components, mockups, wireframes, Figma-style layouts, documents (docx/pdf), presentations (pptx), posters, marketing assets, brand content, dashboards, data viz, or anything where colors, typography, spacing, or components are chosen — even if the user doesn't explicitly say "Pantheon," "brand," or "design system." Petpooja's brand blue is #1770ee and the typeface is Inter (branded as Prometheus). When in doubt about whether a task is visual enough to trigger this skill, trigger it.
 ---
 
 # Pantheon — Petpooja's design system
 
-Every visual artifact Grish (grishma.shah@petpooja.com, design lead at Petpooja) asks for should look like it came out of Pantheon. That means tokens by name, Prometheus type, Pantheon components, and the restrained editorial tone the system is built around. Do not invent colors, type scales, or components when a Pantheon equivalent exists.
+Every visual artifact Shrey (shrey@petpooja.com, senior product designer at Petpooja) asks for should look like it came out of Pantheon. That means tokens by name, Prometheus type, Pantheon components, and the restrained editorial tone the system is built around. Do not invent colors, type scales, or components when a Pantheon equivalent exists.
 
 ## Pre-flight checklist — run this before writing any visual output
 
@@ -25,11 +25,77 @@ This is the rule that overrides every "it would look nicer with…" instinct: **
 
 Two failure modes to watch for, both common:
 
-1. **Pattern-matching from the wider web.** "Pricing pages usually have a monthly/annual toggle." "Dashboards usually have a filter bar." "Landing pages usually have a hero banner." That is not a reason to add one. Grish asked for a pricing card — build a pricing card out of Pantheon components. If the page *might* benefit from a switcher, check first: Pantheon ships `Switch` (binary), `Segment` and `Segment Navigation` (8 component sets for 2–4 exclusive options), `Chips` (filter/tag selection), and `Tabs` (view switching). One of those is almost always the right answer. If none of them fits, **omit the control entirely** and mention the gap in one closing line.
+1. **Pattern-matching from the wider web.** "Pricing pages usually have a monthly/annual toggle." "Dashboards usually have a filter bar." "Landing pages usually have a hero banner." That is not a reason to add one. Shrey asked for a pricing card — build a pricing card out of Pantheon components. If the page *might* benefit from a switcher, check first: Pantheon ships `Switch` (binary), `Segment` and `Segment Navigation` (8 component sets for 2–4 exclusive options), `Chips` (filter/tag selection), and `Tabs` (view switching). One of those is almost always the right answer. If none of them fits, **omit the control entirely** and mention the gap in one closing line.
 
 2. **Treating "call out the gap" as permission to build it.** It isn't. Flagging the gap replaces shipping the invented component, not accompanies it. If Pantheon doesn't have a pill-shaped billing-period toggle and you build one anyway with a note saying "Pantheon doesn't ship this natively," you've still shipped a non-Pantheon component. Flag **and** omit.
 
 The only exception: if the user's prompt explicitly requests something outside Pantheon (e.g., "add a banner even though Pantheon doesn't have one"), compose it from the closest Pantheon primitives, name which primitives you borrowed from, and keep the styling inside Pantheon's token and typography grammar. Never introduce new visual primitives (gradients, custom shadows, pill shapes outside `Round/Rounded`, decorative dividers, icon-in-circle ornaments) that aren't already defined in Pantheon.
+
+## Three hot spots that get botched every time — read before producing anything visual
+
+These three patterns break so often that they get their own section. If the output you're about to produce involves an input field, an icon, or a single emoji character, stop and re-read the matching rule.
+
+### Text Input — reproduce the Pantheon spec exactly, not a vague "input field"
+
+Pantheon's `Text Input` (node `2657:2898`, 480 variants, page `66:685`) is the single largest component set in the file. It is **not** a generic HTML `<input>` with a border. Every input you draw or code must match this spec or it will look foreign:
+
+- **Height by size:** Small 36 · **Medium 40 (default)** · Large 48.
+- **Radius:** `Square/Small` = **8px**. Never 4px, never 6px, never pill (`Round/Rounded` 200) unless you're intentionally building a search-in-header pill and the prompt called for it.
+- **Border:** 1px solid, token by state.
+  - `Default` (empty, unfocused): `Border/Primary` (`#e5e5e5`)
+  - `Input` (has value, unfocused): `Border/Primary` (same as default)
+  - `Active` (focused): `Border/Brand` (`#1770ee`), still 1px — **no glowing focus ring, no 2–3px outline, no box-shadow halo**. Pantheon uses a flat 1px color swap, nothing else.
+  - `Error`: `Border/Error` (`#d92d20`) + supporting text below in `Text/Error`.
+  - `Disabled`: `Border/Disabled` (`#cccccc`) + `Surface/Tertiary` fill + `Text/Tertiary` value.
+- **Fill:** `Surface/Primary` (`#ffffff`) in every state except Disabled.
+- **Label:** always **above** the field (not inside it as a placeholder, not floating). Style: `Label/Small-Medium` (12 / 20, Medium 500) in `Text/Primary`. Gap below the label: 4px.
+- **Value text:** `Body/Medium-Regular` (14 / 22, Regular 400) in `Text/Primary`. Placeholder: same style in `Text/Tertiary` (`#999999`).
+- **Supporting text:** always **below** the field. Style: `Label/Small-Regular` in `Text/Secondary` (helper) or `Text/Error` (error). Gap above the supporting text: 4px.
+- **Leading / trailing icon:** when present, size = 20px (M), color `Icon/Secondary` by default or `Icon/Error` in error state. Gap between icon and value: 8px.
+- **Prefix / suffix:** fixed text inside the field on the corresponding side, `Text/Secondary`, same type style as the value. Separated from the input by a 1px `Border/Primary` vertical divider — not a wider gutter.
+- **CTA variant:** inline trailing Tonal button, `Small` height (36), radius `Square/Small`, sits flush inside the field's right edge.
+- **Padding:** horizontal 12px (Medium), vertical auto from height. Don't pad to "look airier" — the height token already handles it.
+
+Anti-patterns that show up repeatedly:
+
+- ❌ A 44–56px tall input "because it feels more clickable." ✅ Use the Size token — 36 / 40 / 48. Nothing else.
+- ❌ Placeholder text used as the label. ✅ Label above, always. Placeholder is an example of the value, not a name.
+- ❌ 2px `Border/Brand` on focus + a soft blue glow. ✅ 1px `Border/Brand` flat swap. No glow.
+- ❌ Rounded-full / pill inputs. ✅ `Square/Small` (8px) unless the prompt literally asked for a pill search field.
+- ❌ Error state rendered as red text only, no border change. ✅ `Border/Error` + supporting text together.
+- ❌ Icon + label + input all on one line without a label. ✅ Label above, icon inside on the leading side.
+
+When coding the input in React/HTML without a component library, reproduce the above exactly — don't approximate. The reference spec with full variant axes, states, and a code skeleton is in `references/components.md` under `Text Input`.
+
+### Icons — only from the Pantheon icon library, only by name
+
+Pantheon ships icons as two Material Symbols sets. Every icon in a visual output must come from one of these two sets:
+
+- **Outline set** (`2890:13060`) — ~3,857 Material Symbols outline icons. **Default** — use this unless the element is selected/active or inside a filled container.
+- **Filled set** (`2890:28425`) — ~3,845 Material Symbols filled icons. Use for selected states, active tab/nav items, inside `Buttons/Primary` or any filled surface.
+- **Depreciated Icons** (`2896:12975`) — 1,318 legacy custom icons, 16×16 only. **Never use in new work.** They exist only so old Figma files still render.
+
+Rules that are non-negotiable:
+
+1. **Name every icon by its Material Symbols name.** `close`, `search`, `add`, `chevron_right`, `check`, `error`, `arrow_back`, `person`, `shopping_cart`, `edit`, `delete`, `visibility`, etc. If you can't name it, don't use it — that's a tell you're inventing.
+2. **Reference the set.** Mention "Outline" or "Filled" so it traces back to the Figma library. In code, this maps to `<Icon name="search" variant="outline" />` or an inline SVG `<use href="#icon-search-outline"/>`. In a mock-up, note the set next to the icon name.
+3. **Color from Icon tokens only:** `Icon/Primary` (default), `Icon/Secondary` (low-emphasis), `Icon/Brand`, `Icon/Invert` (on dark surfaces / inside filled primary buttons), `Icon/Error`, `Icon/Success`, `Icon/Warning`, `Icon/Disabled`. Never a raw hex, never the element's `color` inheriting through.
+4. **Size from the icon Width scale only:** 16 (XS) · 18 (S) · 20 (M, default) · 24 (L). Match the parent component's size: button S → icon 18, button M → icon 20, button L → icon 24. Chip size maps the same way.
+5. **Never invent an icon as an SVG shape.** No custom stars, hearts, hand-drawn arrows, decorative curls, or "I'll draw a little chevron here." If the Material Symbols set doesn't have what's needed, flag the gap and omit — don't invent.
+
+### Emoji — never. Anywhere. In any visual output.
+
+No 🚀, no ✨, no 📊, no 👉, no ✅, no ❌ — not in headers, not in button labels, not as bullet markers, not as decorative flourishes, not as status indicators, not "just one here to warm it up." Pantheon is restrained and editorial; emoji are the opposite of that.
+
+Where an emoji is the quick habit, use an icon from the Pantheon Outline / Filled sets instead:
+
+- ✅ / ❌ as status → `check` / `close` icons from Outline, colored via `Icon/Success` / `Icon/Error`.
+- 🚀 / ✨ as decoration → cut it. Pantheon doesn't decorate.
+- 📊 / 📋 as section markers → omit or use the section Title typography to carry the weight.
+- 👉 as a pointer → omit. The layout should direct the eye.
+- 💡 as a tip → use a Pantheon `Tooltip` with its `Icon: True` variant (which renders an Outline icon from the library), not a light bulb emoji.
+
+This applies to every format: React / HTML, .docx, .pdf, .pptx, posters, dashboards, marketing copy on a branded surface. The only exception is when Shrey's prompt explicitly asks for emoji (e.g., "write a Slack message with emoji") — in which case emoji are a content choice, not a visual design choice, and the surrounding visual treatment should still be emoji-free.
 
 ## Component-first rule — reuse, don't reinvent
 
@@ -107,7 +173,7 @@ For any other token (opacity-state overlays, primitive ramp steps, status shades
 Pantheon ships **eight** accent families, each with a full 9-step ramp (100–900): **Aqua, Beige, Green, Yellow, Navy Blue, Orange, Pink, Purple**. Every accent family has Surface / Text / Border / Icon / Notch / Chips / Card semantic slots (see `references/tokens.md`). For multi-series charts cycle through the families in the order listed; don't double-up on a ramp until you've exhausted all eight. `Purple` additionally has a theme-specific Dark variant used under POS Dark — when the target theme is POS Dark, read Purple from its Dark ramp.
 
 ### Themes — POS Light / POS Dark / Billing / Payroll
-Pantheon is theme-aware. Four themes exist: **POS Light** (default), **POS Dark**, **Billing**, **Payroll**. Semantic tokens resolve to different primitives per theme — most notably the **Gray ramp is inverted under POS Dark** (`Gray-0` becomes near-black `#0E0E19`, `Gray-1000` becomes white). Unless Grish specifies otherwise, target POS Light. If the ask mentions "dark mode," a POS screen shown at night, or a Payroll / Billing surface, load the theme-specific columns from `references/tokens.md`.
+Pantheon is theme-aware. Four themes exist: **POS Light** (default), **POS Dark**, **Billing**, **Payroll**. Semantic tokens resolve to different primitives per theme — most notably the **Gray ramp is inverted under POS Dark** (`Gray-0` becomes near-black `#0E0E19`, `Gray-1000` becomes white). Unless Shrey specifies otherwise, target POS Light. If the ask mentions "dark mode," a POS screen shown at night, or a Payroll / Billing surface, load the theme-specific columns from `references/tokens.md`.
 
 ### Known gotchas (read once, then file away)
 - `Text/Disabled` resolves to the same hex as `Text/Tertiary` (`#999999`). Keep the semantic distinction in code; they render identically today.
@@ -165,7 +231,7 @@ For any component decision (variant axes, sizes, compositional structure, DOM sh
 
 ### Not in Pantheon — don't reach for Material / iOS / shadcn
 
-Avatar, Banner, Accordion, Pagination, Breadcrumb, Stepper, Loader/Spinner, Search Bar, pill-shaped segmented toggles beyond what Segment / Segment Navigation already provide. Date Picker page exists but is empty. **Default action when one of these would "fit" the page: omit it.** Only compose from primitives if the user's ask genuinely requires it (e.g., they explicitly said "add a banner"). In that case, use Pantheon Building Blocks, Chips, Text Input, Pop Up as the parts, keep styling inside Pantheon's token/typography grammar, and call out the gap in one closing line so Grish can feed it back to the design team. `references/components.md` has recipe hints for each.
+Avatar, Banner, Accordion, Pagination, Breadcrumb, Stepper, Loader/Spinner, Search Bar, pill-shaped segmented toggles beyond what Segment / Segment Navigation already provide. Date Picker page exists but is empty. **Default action when one of these would "fit" the page: omit it.** Only compose from primitives if the user's ask genuinely requires it (e.g., they explicitly said "add a banner"). In that case, use Pantheon Building Blocks, Chips, Text Input, Pop Up as the parts, keep styling inside Pantheon's token/typography grammar, and call out the gap in one closing line so Shrey can feed it back to the design team. `references/components.md` has recipe hints for each.
 
 ## Output conventions by format
 
@@ -198,8 +264,27 @@ If a specific token, variant, or component prop isn't covered in the reference f
 
 If the Figma MCP isn't connected, use the reference files — don't silently invent values.
 
+## Traceability footer — every visual artifact ends with one
+
+After shipping any visual artifact (component, mockup, page, deck, doc), end with a short `Pantheon components used:` footer so Shrey can verify at a glance that everything traces back to the Figma file. Format:
+
+```
+Pantheon components used:
+- Button (Primary, Medium, Square) — Pantheon `Button Primary` set
+- Text Input (Medium, Default) — Pantheon `Text Input` set
+- Chips (Medium, Round, Accent-Green) — Pantheon `Chips` set
+- Icons: `search`, `close` (Outline), `check` (Filled, in selected chip) — Pantheon Outline / Filled sets
+
+Tokens: `Surface/Primary`, `Border/Primary`, `Text/Primary`, `Buttons/Primary`, `Border/Brand`
+Typography: `Prometheus/Title/Large-Bold`, `Body/Medium-Regular`, `Label/Small-Medium`
+```
+
+If the artifact uses a composition of primitives for a not-in-Pantheon pattern (e.g., a Banner composed from Card + status tokens), list it as `Composed from: Card + Surface/Success + Icon/Success — no dedicated component in Pantheon`. This makes the gap visible and prevents the composition from being mistaken for a real Pantheon component later.
+
+Keep the footer compact — just the list, no narration. Its only job is to make traceability mechanical.
+
 ## Working style
 
-When Grish asks for something visual, don't narrate the design system at her — she wrote it. Apply it. A good response ships the artifact; a weak response explains it. If a decision is ambiguous (e.g., "Title/Large or Display/Small?"), pick the one that fits the information density and move on — she'll redirect if needed.
+When Shrey asks for something visual, don't narrate the design system at him — he wrote it. Apply it. A good response ships the artifact; a weak response explains it. If a decision is ambiguous (e.g., "Title/Large or Display/Small?"), pick the one that fits the information density and move on — he'll redirect if needed.
 
-If a task clearly falls outside Pantheon's current coverage (a component that doesn't exist, a novel chart type, a new surface), **first decide whether Grish actually asked for it.** If she didn't, omit it and mention the gap in one closing line. If she did, compose it from Pantheon primitives — staying inside the token and typography grammar — and still flag the gap so it can be fed back into the system. Flagging is never a substitute for adding it to Pantheon later; it is the substitute for building it as a one-off today.
+If a task clearly falls outside Pantheon's current coverage (a component that doesn't exist, a novel chart type, a new surface), **first decide whether Shrey actually asked for it.** If he didn't, omit it and mention the gap in one closing line. If he did, compose it from Pantheon primitives — staying inside the token and typography grammar — and still flag the gap so it can be fed back into the system. Flagging is never a substitute for adding it to Pantheon later; it is the substitute for building it as a one-off today.

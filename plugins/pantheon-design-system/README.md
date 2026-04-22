@@ -42,9 +42,19 @@ For local dev, drag the `.plugin` zip into Cowork or unpack into `~/.claude/plug
 
 ## Maintainer
 
-Pantheon design system maintained by Grishma Shah, Design Lead, Petpooja · grishma.shah@petpooja.com
+Pantheon design system maintained by Shrey, Senior Product Designer, Petpooja · shrey@petpooja.com
 
 ## Version
+
+1.3.1 — fix Text Input Small height: 36, not 32. `Text Input` Size scale is 36 / 40 / 48 (Small / Medium / Large). Corrected in both SKILL.md "Three hot spots" section and `references/components.md` Text Input spec. The 32px height is Button Extra Small, not Text Input Small — they don't share a scale.
+
+1.3.0 — SKILL.md tightened around three recurring failure modes. Dedicated "Three hot spots" section now spells out the `Text Input` spec exactly as it ships in Figma (height 32/40/48 by Size, 8px radius via `Square/Small`, 1px flat border with per-state token, label always above in `Label/Small-Medium`, supporting text below, no glowing focus rings, no pill shape, no placeholder-as-label) so Claude stops shipping generic HTML-ish inputs. Icons are now required to come from the Pantheon Outline (3,857) or Filled (3,845) sets, named by their Material Symbols key, sized from the 16/18/20/24 Width scale, coloured from `Icon/*` tokens — never invented as ad-hoc SVG, never from the Depreciated set. Emoji are forbidden in every visual output (React/HTML, docx, pdf, pptx, posters, dashboards, marketing); where an emoji is the quick habit, the matching Outline icon replaces it. Every artifact must end with a compact `Pantheon components used:` footer listing the component sets, icon names/sets, tokens, and Prometheus composites pulled from the Figma library, making traceability mechanical. `references/components.md` Text Input section already carried the spec; the change is lifting it into SKILL.md so it's read on every visual prompt.
+
+1.2.3 — `/pantheon-bootstrap` drops the Figma identity/auth check entirely. It was originally added to help teammates notice if the Figma connector had been OAuth'd on someone else's token, but in practice the check added noise (false mismatches against Cowork email, stale warnings) without catching meaningful problems. Teammates confirm the account when they connect the Figma MCP in Cowork; no need to re-verify on every bootstrap. Bootstrap is now three jobs: Figma MCP reachability, first sync, schedule weekly auto-sync.
+
+1.2.2 — `/pantheon-bootstrap` no longer programmatically compares the Figma MCP identity against the teammate's Cowork / SSO email. A mismatch there is normal (Cowork login, Figma login, SSO email, and GitHub handle often differ for the same person) and the previous auto-compare was producing false-alarm `⚠️` flags. The bootstrap now surfaces the Figma identity + the teams-on-file list and trusts the teammate to eyeball it.
+
+1.2.1 — maintainer + ownership rename: all references to the previous owner replaced with Shrey (senior product designer, Petpooja · shrey@petpooja.com) across SKILL.md, READMEs, marketplace manifest, and the sync log. No behavior change.
 
 1.2.0 — `/sync-pantheon` runs in evidence-only mode (every patched value cites a literal MCP source + a literal pre-patch file value, no narrative summaries, mandatory verification re-read). `/pantheon-bootstrap` now surfaces the authenticated Figma user prominently and asks the teammate to confirm it's their account before relying on sync output.
 

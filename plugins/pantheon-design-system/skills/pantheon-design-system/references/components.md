@@ -541,7 +541,7 @@ Compose rows from Body Blocks; compose header from Header Blocks + Sort States (
 - `Disabled` = non-interactive.
 (No "Hover" — hover is cosmetic via CSS.)
 
-**Size:** Small 32 | Medium 40 | Large 48.
+**Size:** Small 36 | Medium 40 | Large 48.
 **Type:** `Prefix` = fixed text on the left (e.g., `https://`). `Suffix` = fixed text on the right (e.g., `.com`, units). `Default` = neither.
 **Supporting text:** Helper or error message below the field (booleans True/False).
 **CTA:** Inline trailing button (e.g., "Apply", "Send"). Uses Tonal-style fill.

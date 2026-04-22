@@ -25,7 +25,7 @@ The repo currently contains one plugin:
    ```
    /plugin marketplace add petpooja/pantheon
    ```
-   Replace `petpooja/pantheon` with wherever Grish pushed the repo (e.g. `gitlab:petpooja-internal/pantheon` or a full Git URL). Ask her if unsure.
+   Replace `petpooja/pantheon` with wherever Shrey pushed the repo (e.g. `gitlab:petpooja-internal/pantheon` or a full Git URL). Ask if unsure.
 
 3. Install the plugin:
    ```
@@ -64,7 +64,7 @@ If Claude ever misses on a visual task (shouldn't happen, but), just say "use Pa
 
 ## Weekly auto-update — how it works
 
-Grish maintains Pantheon in Figma. That's the only source of truth. The plugin pulls from Figma on each teammate's machine, on a rolling weekly cadence:
+Shrey maintains Pantheon in Figma. That's the only source of truth. The plugin pulls from Figma on each teammate's machine, on a rolling weekly cadence:
 
 - **In-session auto-sync (default, works everywhere).** On your **first visual prompt each week**, the `pantheon-enforce` hook notices the sync log is more than 7 days old and silently runs `/sync-pantheon` before answering. The sync queries your local Figma Dev Mode MCP, diffs against the plugin's reference files, and patches anything that changed. It logs a dated entry — which resets the clock for another week. Average overhead on the triggering prompt: ~15–25 seconds, once per week. Other prompts in the same week have zero overhead.
 
@@ -91,7 +91,7 @@ All of that's automated.
 
 1. **Claude is using an old token or missing a new component.** Your local sync hasn't run yet this week (or Figma wasn't open when it tried). Open the Pantheon Figma file in Figma desktop, then run `/sync-pantheon` manually. Takes ~20s.
 
-2. **Claude invented a component that's not in Pantheon.** The skill is configured to refuse this and ask for a Pantheon-native alternative, but if it slips through: reply with "use a Pantheon-native alternative — don't invent new components", and ping Grish so we can tighten the skill.
+2. **Claude invented a component that's not in Pantheon.** The skill is configured to refuse this and ask for a Pantheon-native alternative, but if it slips through: reply with "use a Pantheon-native alternative — don't invent new components", and ping Shrey so we can tighten the skill.
 
 3. **Auto-sync keeps failing.** Check the log: `cat ~/.claude/logs/pantheon-sync.stderr.log` (terminal users) or the scheduled task's last-run details in Cowork. Most common cause: Figma desktop not open when the task fired. Open Figma, then `/sync-pantheon`.
 
@@ -123,6 +123,6 @@ All of that's automated.
 
 ## Contact
 
-- **Owner / maintainer:** Grishma Shah, Design Lead, Petpooja — grishma.shah@petpooja.com
+- **Owner / maintainer:** Shrey, Senior Product Designer, Petpooja — shrey@petpooja.com
 - **Updating the plugin itself:** see `MAINTAIN.md`.
 - **Pantheon Figma file:** https://www.figma.com/design/l8qALS4HQUMbSTyP8BTGRL/Pantheon

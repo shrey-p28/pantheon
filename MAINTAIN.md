@@ -1,6 +1,6 @@
 # Maintainer's guide — the `pantheon` repo
 
-This is for Grish (and whoever inherits this). It covers how to publish plugin updates and how the whole thing fits together.
+This is for Shrey (and whoever inherits this). It covers how to publish plugin updates and how the whole thing fits together.
 
 Everyday design work in Figma needs no action from you here — teammates' plugins auto-sync themselves against the Figma file once a week. This guide is for the cases where you change **the plugin** itself: the skill's wording, the reference doc layout, the hook's keyword list, adding a new slash command, etc. Basically anything in this repo.
 

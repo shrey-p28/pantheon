@@ -7,8 +7,8 @@ The hook reads the most recent `date:` line to compute staleness and may remind 
 ---
 
 ## 2026-04-20 — Manual patch (v1.1)
-- **Trigger:** Grish delivered Variables-panel screenshots for the four previously-unrecoverable accent ramps (Pink, Purple Light, Purple Dark, Orange, Navy Blue).
-- **Who:** Claude + Grish, Cowork session.
+- **Trigger:** Shrey delivered Variables-panel screenshots for the four previously-unrecoverable accent ramps (Pink, Purple Light, Purple Dark, Orange, Navy Blue).
+- **Who:** Claude + Shrey, Cowork session.
 - **Changes:**
   - `references/tokens.md`: added full 9-step ramps for Pink, Purple (Light + Dark), Orange, Navy Blue. Added POS Dark column to Gray ramp (`Gray-0 = #0E0E19`, `Gray-1000 = #FFFFFF`). Rewrote Surface / Text / Border / Icon / Notch / Chips / Card semantic tables with accent variants. Expanded Success ramp from 3 steps to 9 steps. Corrected per-alias steps (`Text/Accent-Pink` → Pink-600; `Notch/Accent-Green` → Green-600; `Border/Accent-Purple` → Purple-500).
   - `SKILL.md`: replaced "only 4 accent families" claim with correct 8-family palette. Added pre-flight checklist. Added component-first rule + anti-patterns block. Added theme-awareness section.
