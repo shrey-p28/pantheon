@@ -10,7 +10,7 @@
       "name": "pantheon-design-system",
       "source": "./plugins/pantheon-design-system",
       "description": "Petpooja's Pantheon design system applied automatically to every visual or branded output. Includes evidence-only /sync-pantheon Figma re-digest (no narrative summaries — every patched value cites a literal MCP source), a one-time /pantheon-bootstrap that verifies MCP reachability and schedules the weekly sync, and a UserPromptSubmit hook that keeps the local reference fresh with a weekly auto-sync.",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Petpooja"
       },

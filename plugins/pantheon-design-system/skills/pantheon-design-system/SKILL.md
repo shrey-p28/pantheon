@@ -35,37 +35,73 @@ The only exception: if the user's prompt explicitly requests something outside P
 
 These three patterns break so often that they get their own section. If the output you're about to produce involves an input field, an icon, or a single emoji character, stop and re-read the matching rule.
 
-### Text Input — reproduce the Pantheon spec exactly, not a vague "input field"
+### Text Input — Pantheon uses a notched outlined label, not a stacked label
 
-Pantheon's `Text Input` (node `2657:2898`, 480 variants, page `66:685`) is the single largest component set in the file. It is **not** a generic HTML `<input>` with a border. Every input you draw or code must match this spec or it will look foreign:
+Pantheon's `Text Input` (node `2657:2898`, 480 variants, page `66:685`) is the single largest component set in the file. **The label is a Material Design 3 "outlined text field" floating notched label** — it sits inside the field as a placeholder when empty, and floats up to notch through the top border when the field is focused, filled, errored, or disabled. **It is never a separate label row stacked above the field on its own line.** That stacked-label pattern is what shadcn / Tailwind tutorials default to, and shipping it instead of the notched style is the most common Pantheon-violation in generated UI.
 
 - **Height by size:** Small 36 · **Medium 40 (default)** · Large 48.
 - **Radius:** `Square/Small` = **8px**. Never 4px, never 6px, never pill (`Round/Rounded` 200) unless you're intentionally building a search-in-header pill and the prompt called for it.
-- **Border:** 1px solid, token by state.
-  - `Default` (empty, unfocused): `Border/Primary` (`#e5e5e5`)
-  - `Input` (has value, unfocused): `Border/Primary` (same as default)
-  - `Active` (focused): `Border/Brand` (`#1770ee`), still 1px — **no glowing focus ring, no 2–3px outline, no box-shadow halo**. Pantheon uses a flat 1px color swap, nothing else.
-  - `Error`: `Border/Error` (`#d92d20`) + supporting text below in `Text/Error`.
-  - `Disabled`: `Border/Disabled` (`#cccccc`) + `Surface/Tertiary` fill + `Text/Tertiary` value.
+- **Border:** 1px solid `Border/*` token, applied as an outlined rectangle. The top edge has a **gap (notch) wherever the floated label sits** so the label visually breaks through the border.
 - **Fill:** `Surface/Primary` (`#ffffff`) in every state except Disabled.
-- **Label:** always **above** the field (not inside it as a placeholder, not floating). Style: `Label/Small-Medium` (12 / 20, Medium 500) in `Text/Primary`. Gap below the label: 4px.
-- **Value text:** `Body/Medium-Regular` (14 / 22, Regular 400) in `Text/Primary`. Placeholder: same style in `Text/Tertiary` (`#999999`).
-- **Supporting text:** always **below** the field. Style: `Label/Small-Regular` in `Text/Secondary` (helper) or `Text/Error` (error). Gap above the supporting text: 4px.
-- **Leading / trailing icon:** when present, size = 20px (M), color `Icon/Secondary` by default or `Icon/Error` in error state. Gap between icon and value: 8px.
-- **Prefix / suffix:** fixed text inside the field on the corresponding side, `Text/Secondary`, same type style as the value. Separated from the input by a 1px `Border/Primary` vertical divider — not a wider gutter.
+
+#### Label position is state-dependent — this is the whole point of the component
+
+| State | Label position | Label style | Border color |
+|---|---|---|---|
+| `Default` (empty + unfocused) | **Inside the field**, vertically centered, acts as placeholder text | `Body/Medium-Regular` (14 / 22) in `Text/Tertiary` (`#999`) | `Border/Primary` (`#e5e5e5`) |
+| `Active` (focused, with or without value) | **Floated up, notched through the top border**, inset 12px from left | `Label/Small-Medium` (12 / 20) in `Text/Brand` (`#1770ee`) | `Border/Brand` (`#1770ee`), 1px flat — **no glow, no 2px ring, no halo** |
+| `Input` (has value, unfocused) | **Floated up, notched through the top border** | `Label/Small-Medium` in `Text/Secondary` (`#666`) | `Border/Primary` (`#e5e5e5`) |
+| `Error` | **Floated up, notched** | `Label/Small-Medium` in `Text/Error` (`#d92d20`) | `Border/Error` (`#d92d20`); supporting text below in `Text/Error` |
+| `Disabled` | **Floated up, notched** (or inside if empty-and-disabled) | `Label/Small-Medium` in `Text/Disabled` (`#999`) | `Border/Disabled` (`#ccc`); fill `Surface/Tertiary` |
+
+#### Notch geometry
+
+- The notch is a **gap in the top border** behind the floated label, with ~4px horizontal padding inside the gap on each side of the label text. So gap-width ≈ label-text-width + 8px.
+- The label's left edge sits **12px from the field's left edge** (matches the field's horizontal padding). When a leading icon is present, the label still notches at 12px from the field edge — it does not shift right past the icon.
+- The label's vertical center sits **on the top border line** (so half the label glyphs sit above the border line, half below).
+- Animation when the user focuses an empty field: label scales down from `Body/Medium-Regular` to `Label/Small-Medium`, translates from field-center up to the top border, and the border gap opens behind it. ~150ms ease-out is a reasonable default.
+
+#### The other parts
+
+- **Value text:** `Body/Medium-Regular` (14 / 22, Regular 400) in `Text/Primary`. Placeholder shown only when the field has been focused-then-blurred-without-value or when explicitly different from the label.
+- **Supporting text:** always below the field. Style: `Label/Small-Regular` in `Text/Secondary` (helper) or `Text/Error` (error). Gap above the supporting text: 4px.
+- **Leading / trailing icon:** when present, size = 20px (M), color `Icon/Secondary` by default or `Icon/Error` in error state. Gap between icon and value: 8px. Icons are vertically centered in the field, not aligned with the floated label.
+- **Trailing clear (`×`):** common in filled state — small `close` Outline icon at 20px, `Icon/Secondary`, sits 12px from the right edge.
+- **Prefix / suffix:** fixed text inside the field on the corresponding side, `Text/Secondary`, same type style as the value. Separated from the input by a 1px `Border/Primary` vertical divider — not a wider gutter. Common: `kg ▾` suffix selector, country-flag-`▾` prefix selector.
 - **CTA variant:** inline trailing Tonal button, `Small` height (36), radius `Square/Small`, sits flush inside the field's right edge.
 - **Padding:** horizontal 12px (Medium), vertical auto from height. Don't pad to "look airier" — the height token already handles it.
 
-Anti-patterns that show up repeatedly:
+#### Anti-patterns to never ship
 
+- ❌ Label as a separate bold row above the field ("Email address" on its own line, then the input below). ✅ The label sits **inside** the field when empty and **notches the top border** when filled/focused. This is the single biggest tell of a non-Pantheon input.
 - ❌ A 44–56px tall input "because it feels more clickable." ✅ Use the Size token — 36 / 40 / 48. Nothing else.
-- ❌ Placeholder text used as the label. ✅ Label above, always. Placeholder is an example of the value, not a name.
-- ❌ 2px `Border/Brand` on focus + a soft blue glow. ✅ 1px `Border/Brand` flat swap. No glow.
+- ❌ 2px `Border/Brand` on focus + a soft blue glow. ✅ 1px `Border/Brand` flat swap, with the label floated and notched. No glow.
 - ❌ Rounded-full / pill inputs. ✅ `Square/Small` (8px) unless the prompt literally asked for a pill search field.
-- ❌ Error state rendered as red text only, no border change. ✅ `Border/Error` + supporting text together.
-- ❌ Icon + label + input all on one line without a label. ✅ Label above, icon inside on the leading side.
+- ❌ Error state rendered as red text only, no border change, no floated label. ✅ Border + label + supporting text all in `Border/Error` / `Text/Error`.
+- ❌ A continuous, unbroken top border with the label sitting below it. ✅ Top border has a literal **gap** behind the floated label.
+- ❌ Material Design "filled" variant (grey-filled rectangle with bottom underline). ✅ Outlined-only — Pantheon does not ship the filled style.
 
-When coding the input in React/HTML without a component library, reproduce the above exactly — don't approximate. The reference spec with full variant axes, states, and a code skeleton is in `references/components.md` under `Text Input`.
+#### Reference rendering
+
+Composition skeleton (CSS-only sketch — adapt to your framework):
+
+```html
+<div class="field field--md is-active">           <!-- is-default | is-active | is-input | is-error | is-disabled -->
+  <fieldset class="field__outline">
+    <legend class="field__notch"><span>Label</span></legend>   <!-- legend creates the literal gap in the border -->
+  </fieldset>
+  <div class="field__row">
+    <span class="field__icon">{leadingIcon}</span>
+    <input value="Text" />
+    <span class="field__icon">{trailingIcon}</span>
+  </div>
+  {supportingText && <p class="field__support">Supporting text</p>}
+</div>
+```
+
+The `<fieldset>` + `<legend>` pattern is the cleanest way to get a real notched border in HTML — the legend's background covers the border line behind the label, producing the gap natively without absolute positioning hacks. Material Web Components, MUI's `OutlinedInput`, and Pantheon all use this approach under the hood.
+
+When coding the input in React/HTML without a component library, reproduce the above exactly — don't approximate with a stacked-label fallback. The reference spec with full variant axes, states, and a code skeleton is in `references/components.md` under `Text Input`.
 
 ### Icons — only from the Pantheon icon library, only by name
 

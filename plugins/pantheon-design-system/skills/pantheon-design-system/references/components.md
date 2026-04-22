@@ -546,27 +546,47 @@ Compose rows from Body Blocks; compose header from Header Blocks + Sort States (
 **Supporting text:** Helper or error message below the field (booleans True/False).
 **CTA:** Inline trailing button (e.g., "Apply", "Send"). Uses Tonal-style fill.
 **Default:** Medium, Default state, Type=Default, no icons, no supporting text, no CTA.
-**Typography:** Value `Body/Medium-Regular`, Label above `Label/Small-Medium`, Supporting text `Label/Small-Regular`.
-**Tokens used:** `Surface/Primary`, `Border/Primary`, `Border/Brand`, `Border/Error`, `Text/Primary`, `Text/Secondary`, `Text/Error`, `Text/Disabled`, `Square/Small` (8) radius. 32 unique tokens.
+**Typography:** Value `Body/Medium-Regular` (14/22). Label `Label/Small-Medium` (12/20) when floated, `Body/Medium-Regular` in `Text/Tertiary` when acting as placeholder inside the empty field. Supporting text `Label/Small-Regular`.
+**Tokens used:** `Surface/Primary`, `Border/Primary`, `Border/Brand`, `Border/Error`, `Text/Primary`, `Text/Secondary`, `Text/Tertiary`, `Text/Brand`, `Text/Error`, `Text/Disabled`, `Square/Small` (8) radius. 32 unique tokens.
 **When to use:** Any free-text entry. For multi-select from a known list, use Dropdown (which uses Text Input as its trigger). Multi-line: no separate component — stretch this one's height and set `rows` on the textarea.
-**Composition / code shape:**
+
+**Label behavior — this is Material Design 3 "outlined text field", NOT a stacked label.**
+The label lives INSIDE the field's border. When the field is empty and unfocused, the label sits at vertical center and acts as the placeholder. When the field is focused or has a value, the label floats up and notches through the top border (the border breaks to accommodate the label at 12px inset from the left). Label position is state-dependent:
+
+| State | Label position | Label style | Border |
+|-------|----------------|-------------|--------|
+| Default (empty + unfocused) | Inside, vertical center | `Body/Medium-Regular` in `Text/Tertiary` | `Border/Primary`, 1px |
+| Active (focused) | Floated up, notched through top border, inset 12px from left | `Label/Small-Medium` in `Text/Brand` | `Border/Brand`, 1px flat — no glow |
+| Input (has value, unfocused) | Floated up, notched | `Label/Small-Medium` in `Text/Secondary` | `Border/Primary`, 1px |
+| Error | Floated up, notched | `Label/Small-Medium` in `Text/Error` | `Border/Error`, 1px |
+| Disabled | Floated up, notched (or inside if empty-and-disabled) | `Label/Small-Medium` in `Text/Disabled` | `Border/Disabled`, 1px; fill `Surface/Tertiary` |
+
+**Notch geometry:** Label inset 12px from the left edge. ~4px horizontal padding inside the notch gap. Label vertical center sits ON the top border line (so half the label is above, half is below — the border is "cut" around the text). 150ms ease-out animation between states.
+
+**Composition / code shape:** Use `<fieldset>` + `<legend>` to get the native notched border — the legend's background color covers the top border exactly where the label appears, producing the cut-through automatically. This is how MUI's `OutlinedInput` and Material Web Components render the pattern.
+
 ```
-<div class="field field--md field--error">
-  <label for="email">Email</label>
-  <div class="field__control">
-    {leadingIcon && <Icon/>}
-    {prefix && <span class="field__prefix">https://</span>}
-    <input id="email" type="email" aria-invalid={error} aria-describedby={error ? "email-err" : undefined}/>
-    {suffix && <span class="field__suffix">.com</span>}
-    {trailingIcon && <Icon/>}
-    {cta && <Button variant="tonal" size="sm">Apply</Button>}
-  </div>
+<div class="field field--md field--active">
+  <fieldset class="field__outline">
+    <legend class="field__notch"><span>Email</span></legend>
+    <div class="field__control">
+      {leadingIcon && <Icon/>}
+      {prefix && <span class="field__prefix">https://</span>}
+      <input id="email" type="email" placeholder=" " aria-invalid={error} aria-describedby={error ? "email-err" : undefined}/>
+      {suffix && <span class="field__suffix">.com</span>}
+      {trailingIcon && <Icon/>}
+      {cta && <Button variant="tonal" size="sm">Apply</Button>}
+    </div>
+  </fieldset>
   {supportingText && <div id="email-err" class="field__support">{message}</div>}
 </div>
 ```
-For multi-line, swap `<input>` for `<textarea rows={N}>`.
+The legend renders inside the fieldset's top border; when empty, toggle a class that positions the label back inside via CSS. For multi-line, swap `<input>` for `<textarea rows={N}>` — same notched outline.
 **Gotchas:**
 - 480 variants — don't try to enumerate, compose by axis.
+- **Do NOT render the label as a separate `<label>` row above the field** — that's the shadcn / Tailwind stacked pattern and it's the most common Pantheon-violation in generated UI. Pantheon is notched outline, always.
+- Never use the Material "filled" variant (grey fill + bottom underline). Pantheon is strictly the outlined variant.
+- Never add a focus glow ring (no `box-shadow` on focus). Focus is communicated by `Border/Brand` color + the label color change, nothing else.
 - No dedicated multi-line variant. Use `<textarea>` with the same visual tokens.
 - Error state must be paired with `Supporting text: True` (otherwise the user sees a red box with no reason). Wire `aria-describedby` to the supporting text.
 - Prefix/Suffix are visual-only — the underlying `<input value>` should NOT include them.
