@@ -1,37 +1,14 @@
 {
   "name": "pantheon",
   "owner": {
-    "name": "Shrey",
+    "name": "Petpooja"
   },
-  "description": "Pantheon — Petpooja's design system — as a Claude plugin. Every teammate's Claude produces Pantheon-aligned UI, docs, decks, and marketing assets out of the box, with automatic weekly re-sync from the Pantheon Figma file.",
   "plugins": [
     {
       "name": "pantheon-design-system",
       "source": "./plugins/pantheon-design-system",
-      "description": "Petpooja's Pantheon design system applied automatically to every visual or branded output. Includes on-demand /sync-pantheon Figma re-digest, a one-time /pantheon-bootstrap for new teammates, and a UserPromptSubmit hook that keeps the local reference fresh with a weekly auto-sync.",
-      "version": "1.1.0",
-      "author": {
-        "name": "Petpooja"
-      },
-      "homepage": "https://www.figma.com/design/l8qALS4HQUMbSTyP8BTGRL/Pantheon",
-      "category": "design",
-      "tags": [
-        "petpooja",
-        "design-system",
-        "pantheon",
-        "brand",
-        "tokens",
-        "prometheus",
-        "figma",
-        "auto-sync"
-      ],
-      "keywords": [
-        "petpooja",
-        "pantheon",
-        "design",
-        "brand",
-        "figma"
-      ]
+      "description": "Petpooja's Pantheon design system as a Claude plugin. Tokens, Prometheus typography, and the 47-component library applied to every visual or branded output.",
+      "version": "1.1.0"
     }
   ]
 }
