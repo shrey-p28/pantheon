@@ -1,7 +1,7 @@
 {
   "name": "pantheon-design-system",
-  "version": "1.3.2",
-  "description": "Petpooja's Pantheon design system as a Claude plugin. Applies Pantheon tokens, Prometheus typography, and the 47-component library to every visual or branded output. Includes /sync-pantheon (evidence-only Figma re-digest — every patched value cites a literal MCP source), /pantheon-bootstrap (one-time teammate setup: verifies Figma MCP, runs first sync, schedules weekly auto-sync), a UserPromptSubmit hook that auto-triggers weekly re-syncs, and a macOS LaunchAgent installer for terminal users.",
+  "version": "1.4.5",
+  "description": "Petpooja's Pantheon design system as a Claude plugin. Applies Pantheon tokens, Prometheus typography, and the 47-component library to every visual or branded output. v1.4.x adds the Figma-authoring path: when the target is Figma, the skill REQUIRES Claude to import real component instances from the Pantheon library (file `l8qALS4HQUMbSTyP8BTGRL`, library `lk-e668811788fb…`) via the official Figma MCP using `figma.importComponentSetByKeyAsync(componentKey)` — never to redraw shapes or substitute SVG/HTML mocks. Includes a verified component → componentKey lookup table for all 25 canonical Pantheon component sets, real `use_figma` JS skeletons, and the file-key vs library-key vs component-key identifier model. /sync-pantheon (evidence-only Figma re-digest), /pantheon-bootstrap (one-time teammate setup), UserPromptSubmit hook for weekly re-syncs, and a macOS LaunchAgent installer for terminal users.",
   "author": {
     "name": "Petpooja"
   },

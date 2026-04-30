@@ -110,11 +110,13 @@ fi
 cat <<EOF
 [Pantheon auto-reminder]
 This task looks visual / branded. The **pantheon-design-system** skill applies:
-- Use Pantheon tokens by name (no raw hex unless it came from a token).
-- Use Pantheon components (Button, Text Input, Chips, Card, Table, Segment, etc.) — never reinvent a \`<button>\` or \`<input>\` from scratch, and never invent a component that isn't in the library.
-- Use Prometheus (Inter) type composites only. Letter-spacing 0.
+- STEP 0: Detect the output target (Figma / Code / Document) and route to the matching path in SKILL.md.
+- If the target is **Figma**: you MUST use the Figma MCP to import REAL component instances from the Pantheon library (file \`l8qALS4HQUMbSTyP8BTGRL\`, library key \`lk-e668811788fb…\`) via \`figma.importComponentSetByKeyAsync(componentKey)\` inside \`use_figma\`. Component keys are listed in SKILL.md §1.6 and resolved live via \`search_design_system\` (\`fileKey\` = user's working file, \`includeLibraryKeys\` = [Pantheon library key]). Local node IDs are NOT importable across files — use componentKeys. Do NOT redraw shapes. Do NOT substitute an SVG/HTML mockup for a real Figma file.
+- **Placement: ASK first, never default to creating a new file.** Most asks ("design X in Figma") mean "add to an existing file." Only call \`create_new_file\` when the user explicitly says so, and only into a Petpooja shared project folder via \`projectId\` — NEVER drafts (drafts in the connector's auth'd account are invisible to other Petpooja teammates the moment the connector reconnects). See SKILL.md §1.3 Step 0.
+- If the MCP is not connected, say so and ask the user to connect it. See SKILL.md §1 and references/figma-authoring.md for the exact tool sequence.
+- For Code / Document targets: Use Pantheon tokens by name (no raw hex unless it came from a token). Use Pantheon components (Button, Text Input, Chips, Card, Table, Segment, etc.) — never reinvent a \`<button>\` or \`<input>\`, and never invent a component that isn't in the library. Use Prometheus (Inter) type composites only. Letter-spacing 0.
 - Cycle chart colors through the 8 accent families: Aqua, Beige, Green, Yellow, Navy Blue, Orange, Pink, Purple.
 - Default theme is POS Light unless the user says dark mode / Billing / Payroll.
 
-Run the skill's pre-flight checklist (theme / tokens / components / type / component-mapping test) before producing any visual artifact.${AUTO_SYNC_BLOCK}
+Run the skill's pre-flight checklist before producing any visual artifact, and end with the matching traceability footer.${AUTO_SYNC_BLOCK}
 EOF
